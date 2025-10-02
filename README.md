@@ -115,10 +115,6 @@ Keys follow the Stripe-like format:
 {prefix}_{environment}_{random}
 ```
 
-Examples:
-- `sk_live_7Xh2kP9vN3mQrT5wL8nY1zB4xF6vC3pK`
-- `pk_test_A2bC9dE4fG7hJ1kL3mN5oP8qR6sT9uV2`
-
 ## Security Features
 
 - Passwords hashed using PBKDF2 with SHA-256
