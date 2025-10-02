@@ -11,7 +11,7 @@ builder.Services.AddControllersWithViews();
 
 // Configure Database
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Configure Data Protection (persist keys to database)
 // Keys are stored in the database so they survive container restarts

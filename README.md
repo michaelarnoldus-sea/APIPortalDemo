@@ -1,6 +1,6 @@
 # API Portal
 
-A simple API key management system built with ASP.NET Core 8, HTMX, and PostgreSQL.
+A simple API key management system built with ASP.NET Core 8, HTMX, and SQLite.
 
 ## Features
 
@@ -39,22 +39,14 @@ A simple API key management system built with ASP.NET Core 8, HTMX, and PostgreS
 
 ### Local Development
 
-1. **Start PostgreSQL:**
-   ```bash
-   docker-compose up postgres -d
-   ```
-
-2. **Run migrations:**
-   ```bash
-   dotnet ef database update
-   ```
-
-3. **Run the application:**
+1. **Run the application:**
    ```bash
    dotnet run
    ```
 
-4. **Access at:** http://localhost:5000
+2. **Access at:** http://localhost:5000
+
+Note: The SQLite database file will be created automatically in the project directory on first run.
 
 ## Using the Application
 
@@ -148,7 +140,7 @@ Keys follow the Stripe-like format:
 ## Technologies
 
 - **Backend**: ASP.NET Core 8 MVC
-- **Database**: PostgreSQL 16
+- **Database**: SQLite
 - **ORM**: Entity Framework Core 8
 - **Frontend**: HTMX 1.9, Bootstrap 5
 - **Containerization**: Docker & Docker Compose
@@ -159,7 +151,7 @@ Keys follow the Stripe-like format:
 docker-compose down
 ```
 
-To remove volumes (database data):
+To remove volumes (SQLite database file):
 ```bash
 docker-compose down -v
 ```
