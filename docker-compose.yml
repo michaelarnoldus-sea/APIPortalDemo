@@ -1,0 +1,37 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: apiportal-postgres
+    environment:
+      - POSTGRES_USER=apiportal
+      - POSTGRES_PASSWORD=ApiPortal123!
+      - POSTGRES_DB=ApiPortalDb
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U apiportal -d ApiPortalDb"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+
+  webapp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: apiportal-webapp
+    ports:
+      - "5000:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+      - ConnectionStrings__DefaultConnection=Host=postgres;Database=ApiPortalDb;Username=apiportal;Password=ApiPortal123!
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  postgres-data:

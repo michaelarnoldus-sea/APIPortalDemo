@@ -1,0 +1,53 @@
+@model APIPortal.Models.ApiKey
+
+<tr id="key-@Model.Id">
+    <td><code>@Model.KeyPrefix</code></td>
+    <td>
+        <code class="key-display">@(Model.KeyPrefix)_••••••••@Model.KeyPreview</code>
+    </td>
+    <td>
+        @if (Model.Status == "Active")
+        {
+            <span class="badge bg-success">@Model.Status</span>
+        }
+        else if (Model.Status == "Expired")
+        {
+            <span class="badge bg-warning">@Model.Status</span>
+        }
+        else
+        {
+            <span class="badge bg-danger">@Model.Status</span>
+        }
+    </td>
+    <td>
+        @{
+            var scopes = System.Text.Json.JsonSerializer.Deserialize<List<string>>(Model.Scopes) ?? new List<string>();
+            if (scopes.Count > 0)
+            {
+                <small>@string.Join(", ", scopes)</small>
+            }
+            else
+            {
+                <small class="text-muted">none</small>
+            }
+        }
+    </td>
+    <td><small>@Model.CreatedAt.ToString("yyyy-MM-dd")</small></td>
+    <td><small>@Model.ExpiresAt.ToString("yyyy-MM-dd")</small></td>
+    <td>
+        @if (Model.IsActive)
+        {
+            <button class="btn btn-sm btn-danger"
+                    hx-post="/ApiKeys/Revoke/@Model.Id"
+                    hx-target="#key-@Model.Id"
+                    hx-swap="outerHTML"
+                    hx-confirm="Are you sure you want to revoke this key?">
+                Revoke
+            </button>
+        }
+        else
+        {
+            <span class="text-muted">—</span>
+        }
+    </td>
+</tr>

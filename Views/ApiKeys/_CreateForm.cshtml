@@ -1,0 +1,53 @@
+<div class="modal fade show" style="display: block; background: rgba(0,0,0,0.5);" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create New API Key</h5>
+                <button type="button" class="btn-close" onclick="document.getElementById('modal-container').innerHTML=''"></button>
+            </div>
+            <form hx-post="/ApiKeys/Create"
+                  hx-target="#modal-container"
+                  hx-swap="innerHTML">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="prefix" class="form-label">Prefix</label>
+                        <select class="form-select" id="prefix" name="prefix" required>
+                            <option value="sk">sk (Secret Key)</option>
+                            <option value="pk">pk (Public Key)</option>
+                            <option value="sea">sea (Custom)</option>
+                            <option value="api">api (API Key)</option>
+                        </select>
+                        <small class="text-muted">The key prefix identifier</small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="environment" class="form-label">Environment</label>
+                        <select class="form-select" id="environment" name="environment" required>
+                            <option value="live">live</option>
+                            <option value="test">test</option>
+                        </select>
+                        <small class="text-muted">The environment this key will be used in</small>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Scopes</label>
+                        @foreach (var scope in (ViewBag.Scopes as List<APIPortal.Models.Scope>) ?? new List<APIPortal.Models.Scope>())
+                        {
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="scopes" value="@scope.Name" id="scope-@scope.Id">
+                                <label class="form-check-label" for="scope-@scope.Id">
+                                    <strong>@scope.Name</strong> - @scope.Description
+                                </label>
+                            </div>
+                        }
+                    </div>
+                    <div class="alert alert-info">
+                        <small>Keys expire after 30 days and can be revoked at any time.</small>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="document.getElementById('modal-container').innerHTML=''">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Generate Key</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

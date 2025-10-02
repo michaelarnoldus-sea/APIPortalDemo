@@ -1,0 +1,48 @@
+<div class="modal fade show" style="display: block; background: rgba(0,0,0,0.5);" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title">API Key Created Successfully</h5>
+                <button type="button" class="btn-close btn-close-white" onclick="location.reload()"></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-warning">
+                    <strong>⚠️ Important:</strong> This is the only time you'll see the full key. Copy it now!
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Your API Key:</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control font-monospace" id="full-key" value="@ViewBag.FullKey" readonly>
+                        <button class="btn btn-outline-secondary" type="button" onclick="copyToClipboard()">
+                            Copy
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card bg-light">
+                    <div class="card-body">
+                        <h6 class="card-title">Key Details:</h6>
+                        <ul class="mb-0">
+                            <li><strong>Prefix:</strong> <code>@ViewBag.ApiKey.KeyPrefix</code></li>
+                            <li><strong>Created:</strong> @ViewBag.ApiKey.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss")</li>
+                            <li><strong>Expires:</strong> @ViewBag.ApiKey.ExpiresAt.ToString("yyyy-MM-dd")</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="location.reload()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function copyToClipboard() {
+    const input = document.getElementById('full-key');
+    input.select();
+    document.execCommand('copy');
+    alert('API key copied to clipboard!');
+}
+</script>

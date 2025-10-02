@@ -1,0 +1,69 @@
+@{
+    ViewData["Title"] = "Database Viewer - DEMO";
+}
+
+<div class="alert alert-warning border-warning" style="border-left: 5px solid #ffc107;">
+    <h4 class="alert-heading">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-triangle-fill" viewBox="0 0 16 16" style="vertical-align: text-bottom;">
+            <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+        </svg>
+        DEMO FEATURE - For Demonstration Only
+    </h4>
+    <p class="mb-0">
+        <strong>This database viewer is for demonstration purposes only.</strong>
+        It shows real-time database contents to illustrate how API keys are stored, hashed, and managed.
+        <strong class="text-danger">Never expose database contents like this in a production API portal!</strong>
+    </p>
+</div>
+
+<div class="row mb-3">
+    <div class="col">
+        <h1>Database Viewer</h1>
+        <p class="text-muted">Live view of database tables • Auto-refreshes every 5 seconds</p>
+    </div>
+    <div class="col-auto">
+        <button id="pauseBtn" class="btn btn-sm btn-outline-secondary" onclick="toggleRefresh()">
+            <span id="pauseIcon">⏸</span> Pause Refresh
+        </button>
+    </div>
+</div>
+
+<div id="data-container"
+     hx-get="/DbViewer/GetData"
+     hx-trigger="load, every 5s"
+     hx-swap="innerHTML">
+    <div class="text-center py-5">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="mt-3">Loading database data...</p>
+    </div>
+</div>
+
+<script>
+let isPaused = false;
+
+function toggleRefresh() {
+    isPaused = !isPaused;
+    const container = document.getElementById('data-container');
+    const btn = document.getElementById('pauseBtn');
+    const icon = document.getElementById('pauseIcon');
+
+    if (isPaused) {
+        container.setAttribute('hx-trigger', 'load');
+        btn.classList.remove('btn-outline-secondary');
+        btn.classList.add('btn-secondary');
+        icon.textContent = '▶';
+        btn.innerHTML = '<span id="pauseIcon">▶</span> Resume Refresh';
+    } else {
+        container.setAttribute('hx-trigger', 'load, every 5s');
+        btn.classList.remove('btn-secondary');
+        btn.classList.add('btn-outline-secondary');
+        icon.textContent = '⏸';
+        btn.innerHTML = '<span id="pauseIcon">⏸</span> Pause Refresh';
+    }
+
+    // Reinitialize HTMX for the container
+    htmx.process(container);
+}
+</script>
